@@ -98,7 +98,7 @@ Invoke-Command -Credential $credentials -ComputerName $env:COMPUTERNAME -ScriptB
     #################################
     Write-Verbose -Verbose "Entering Elevated Custom Script Commands..."
 
-    Start-Process -FilePath "./python.exe" -ArgumentList "C:/tabsetup/ScriptedInstaller.py install --secretsFile C:/tabsetup/secrets.json --configFile C:/tabsetup/myconfig.json --registrationFile C:/tabsetup/registration.json C:/tabsetup/tableau-server-installer.exe --start yes" -Wait -NoNewWindow
+    Start-Process -FilePath "./python.exe" -ArgumentList "C:/tabsetup/ScriptedInstaller.py install --secretsFile C:/tabsetup/secrets.json --configFile C:/tabsetup/myconfig.json --registrationFile C:/tabsetup/registration.json C:/tabsetup/tableau-server-installer.exe --start yes" -verb runAs -Wait -NoNewWindow
 }
 
 
