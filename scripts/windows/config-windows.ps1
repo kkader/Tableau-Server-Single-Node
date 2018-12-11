@@ -92,15 +92,14 @@ cd "C:\Program Files (x86)\Python37-32\"
 $securePassword = ConvertTo-SecureString $local_admin_pass -AsPlainText -Force
 $credentials = New-Object System.Management.Automation.PSCredential $local_admin_user, $securePassword
 
-Invoke-Command -Credential $credentials -ComputerName $env:COMPUTERNAME -ScriptBlock {
+Invoke-Command -Credential $credentials -ScriptBlock {
     #################################
     # Elevated custom scripts go here 
     #################################
     Write-Verbose -Verbose "Entering Elevated Custom Script Commands..."
 
-    Start-Process -FilePath "./python.exe" -ArgumentList "C:/tabsetup/ScriptedInstaller.py install --secretsFile C:/tabsetup/secrets.json --configFile C:/tabsetup/myconfig.json --registrationFile C:/tabsetup/registration.json C:/tabsetup/tableau-server-installer.exe --start yes" -verb runAs -Wait -NoNewWindow
+    Start-Process -FilePath "./python.exe" -ArgumentList "C:/tabsetup/ScriptedInstaller.py install --secretsFile C:/tabsetup/secrets.json --configFile C:/tabsetup/myconfig.json --registrationFile C:/tabsetup/registration.json C:/tabsetup/tableau-server-installer.exe --start yes" -Verb runAs -Wait -NoNewWindow
 }
-
 
 ## 4. Open port 8850 for TSM access & 80 for Tableau Server access
 New-NetFirewallRule -DisplayName "TSM Inbound" -Direction Inbound -Action Allow -LocalPort 8850 -Protocol TCP
