@@ -92,7 +92,7 @@ cd "C:\Program Files (x86)\Python37-32\"
 $securePassword = ConvertTo-SecureString $local_admin_pass -AsPlainText -Force
 $credentials = New-Object System.Management.Automation.PSCredential $local_admin_user, $securePassword
 
-Invoke-Command -Credential $credentials -ComputerName $env:COMPUTERNAME -ScriptBlock {
+Invoke-Command -Credential $credentials -ScriptBlock {
     #################################
     # Elevated custom scripts go here 
     #################################
