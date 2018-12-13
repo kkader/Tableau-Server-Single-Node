@@ -90,15 +90,16 @@ cd "C:\Program Files (x86)\Python37-32\"
 
 ## Custom Script Extension is running as SYSTEM... does not have the permission to launch a process as another user
 $securePassword = ConvertTo-SecureString $local_admin_pass -AsPlainText -Force
-$credentials = New-Object System.Management.Automation.PSCredential $local_admin_user, $securePassword
+$userWithDomain = $env:USERDOMAIN+""+$local_admin_user
+$credentials = New-Object System.Management.Automation.PSCredential $userWithDomain, $securePassword
 
-Invoke-Command -Credential $credentials -ScriptBlock {
+Invoke-Command -Credential $credentials -ComputerName $env:COMPUTERNAME -ScriptBlock {
     #################################
     # Elevated custom scripts go here 
     #################################
     Write-Verbose -Verbose "Entering Elevated Custom Script Commands..."
 
-    Start-Process -FilePath "./python.exe" -ArgumentList "C:/tabsetup/ScriptedInstaller.py install --secretsFile C:/tabsetup/secrets.json --configFile C:/tabsetup/myconfig.json --registrationFile C:/tabsetup/registration.json C:/tabsetup/tableau-server-installer.exe --start yes" -Verb runAs -Wait -NoNewWindow
+    Start-Process -FilePath "./python.exe" -ArgumentList "C:/tabsetup/ScriptedInstaller.py install --secretsFile C:/tabsetup/secrets.json --configFile C:/tabsetup/myconfig.json --registrationFile C:/tabsetup/registration.json C:/tabsetup/tableau-server-installer.exe --start yes" -Wait -NoNewWindow
 }
 
 ## 4. Open port 8850 for TSM access & 80 for Tableau Server access
