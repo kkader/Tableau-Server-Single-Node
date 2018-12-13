@@ -93,7 +93,7 @@ $securePassword = ConvertTo-SecureString $local_admin_pass -AsPlainText -Force
 $userWithDomain = $env:USERDOMAIN+""+$local_admin_user
 $credentials = New-Object System.Management.Automation.PSCredential $userWithDomain, $securePassword
 
-Invoke-Command -Credential $credentials -ComputerName $env:COMPUTERNAME -ScriptBlock {
+Invoke-Command -Authentication credssp -Credential $credentials -ComputerName $env:COMPUTERNAME -ScriptBlock {
     #################################
     # Elevated custom scripts go here 
     #################################
