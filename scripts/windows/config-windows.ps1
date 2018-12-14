@@ -92,11 +92,7 @@ $ErrorLog = "C:\tabsetup\config-windows-error-log.txt"
 
 ## Custom Script Extension is running as SYSTEM... does not have the permission to launch a process as another user
 $securePassword = ConvertTo-SecureString $local_admin_pass -AsPlainText -Force
-$userWithDomain = $env:USERDOMAIN+"/"+$local_admin_user
-$credentials = New-Object System.Management.Automation.PSCredential $local_admin_user, $securePassword
-
-Write-Output ('userWithDomain: '+$userWithDomain) | Out-File $ErrorLog -Append
-Write-Output ('computer name: '+$env:COMPUTERNAME) | Out-File $ErrorLog -Append
+$credentials = New-Object System.Management.Automation.PSCredential("$env:USERDOMAIN\$local_admin_user", $securePassword)
 
 Invoke-Command -Credential $credentials -ComputerName $env:COMPUTERNAME -ScriptBlock {
     #################################
