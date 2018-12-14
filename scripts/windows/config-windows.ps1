@@ -95,11 +95,14 @@ $securePassword = ConvertTo-SecureString $local_admin_pass -AsPlainText -Force
 $usernameWithDomain = $env:COMPUTERNAME+"\"+$local_admin_user
 $credentials = New-Object System.Management.Automation.PSCredential($usernameWithDomain, $securePassword)
 
-Invoke-Command -Credential $credentials -ComputerName $env:COMPUTERNAME -ScriptBlock {
+Write-Output ('param: ' + $local_admin_user) | Out-File $ErrorLog -Append
+Write-Output ('username: ' + $usernameWithDomain) | Out-File $ErrorLog -Append
+
+Invoke-Command -Credential $credentials -ComputerName $env:COMPUTERNAME -ArgumentList $ErrorLog -ScriptBlock {
     #################################
     # Elevated custom scripts go here 
     #################################
-    Write-Output ('Entering Elevated Custom Script Commands...') | Out-File $ErrorLog -Append
+    Write-Output ('Entering Elevated Custom Script Commands...') | Out-File $using:ErrorLog -Append
 
     Start-Process -FilePath "./python.exe" -ArgumentList "C:/tabsetup/ScriptedInstaller.py install --secretsFile C:/tabsetup/secrets.json --configFile C:/tabsetup/myconfig.json --registrationFile C:/tabsetup/registration.json C:/tabsetup/tableau-server-installer.exe --start yes" -Wait -NoNewWindow
 }
@@ -109,4 +112,4 @@ New-NetFirewallRule -DisplayName "TSM Inbound" -Direction Inbound -Action Allow 
 New-NetFirewallRule -DisplayName "Tableau Server Inbound" -Direction Inbound -Action Allow -LocalPort 80 -Protocol TCP
 
 ## 4. Clean up secrets
-del c:/tabsetup/secrets.json
+#del c:/tabsetup/secrets.json
