@@ -101,7 +101,7 @@ Invoke-Command -Credential $credentials -ComputerName $env:COMPUTERNAME -ScriptB
     #################################
     Write-Output ('Entering Elevated Custom Script Commands...') | Out-File $ErrorLog -Append
 
-    Start-Process -FilePath "./python.exe" -ArgumentList "C:/tabsetup/ScriptedInstaller.py install --secretsFile C:/tabsetup/secrets.json --configFile C:/tabsetup/myconfig.json --registrationFile C:/tabsetup/registration.json C:/tabsetup/tableau-server-installer.exe --start yes" -Wait -NoNewWindow
+    Start-Process -FilePath "python.exe" -ArgumentList "C:/tabsetup/ScriptedInstaller.py install --secretsFile C:/tabsetup/secrets.json --configFile C:/tabsetup/myconfig.json --registrationFile C:/tabsetup/registration.json C:/tabsetup/tableau-server-installer.exe --start yes" -Wait -NoNewWindow
 }
 
 ## 4. Open port 8850 for TSM access & 80 for Tableau Server access
