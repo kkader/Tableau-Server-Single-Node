@@ -1,28 +1,30 @@
 Param(
     [string]$config
-#    [string]$ts_admin_un,
-#    [string]$ts_admin_pw,
-#    [string]$reg_first_name,
-#    [string]$reg_last_name,
-#    [string]$reg_email,
-#    [string]$reg_company,
-#    [string]$reg_title,
-#    [string]$reg_department,
-#    [string]$reg_industry,
-#    [string]$reg_phone,
-#    [string]$reg_city,
-#    [string]$reg_state,
-#    [string]$reg_zip,
-#    [string]$reg_country,
-#    [string]$license_key,
-#    [string]$install_script_url,
-#    [string]$local_admin_user,
-#    [string]$local_admin_pass
 )
 
 # base64 decode and convert json string to obj of params
-$paramJson = [System.Text.Encoding]::Unicode.GetString([System.Convert]::FromBase64String($config))
+$paramJson = [System.Text.Encoding]::ASCII.GetString([System.Convert]::FromBase64String($config))
 $param = ConvertFrom-Json $paramJson
+
+#turn into local vars
+$ts_admin_un = $param.ts_admin_un
+$ts_admin_pw = $param.ts_admin_pw
+$reg_first_name = $param.reg_first_name
+$reg_last_name = $param.reg_last_name
+$reg_email = $param.reg_email
+$reg_company = $param.reg_company
+$reg_title = $param.reg_title
+$reg_department = $param.reg_department
+$reg_industry = $param.reg_industry
+$reg_phone = $param.reg_phone
+$reg_city = $param.reg_city
+$reg_state = $param.reg_state
+$reg_zip = $param.reg_zip
+$reg_country = $param.reg_country
+$license_key = $param.license_key
+$install_script_url = $param.install_script_url
+$local_admin_user = $param.local_admin_user
+$local_admin_pass = $param.local_admin_pass
 
 ## FILES
 
@@ -31,29 +33,29 @@ cd C:/
 mkdir tabsetup
 
 $secrets = @{
-    local_admin_user="$param.local_admin_user"
-    local_admin_pass="$param.local_admin_pass"
-    content_admin_user="$param.ts_admin_un"
-    content_admin_pass="$param.ts_admin_pw"
-    product_keys=@("$param.license_key")
+    local_admin_user="$local_admin_user"
+    local_admin_pass="$local_admin_pass"
+    content_admin_user="$ts_admin_un"
+    content_admin_pass="$ts_admin_pw"
+    product_keys=@("$license_key")
 }
 
 $secrets | ConvertTo-Json -depth 10 | Out-File "C:/tabsetup/secrets.json" -Encoding utf8
 
 ## 2. make registration.json
 $registration = @{
-    first_name = "$param.reg_first_name"
-    last_name = "$param.reg_last_name"
-    email = "$param.reg_email"
-    company = "$param.reg_company"
-    title = "$param.reg_title"
-    department = "$param.reg_department"
-    industry = "$param.reg_industry"
-    phone = "$param.reg_phone"
-    city = "$param.reg_city"
-    state = "$param.reg_state"
-    zip = "$param.reg_zip"
-    country = "$param.reg_country"
+    first_name = "$reg_first_name"
+    last_name = "$reg_last_name"
+    email = "$reg_email"
+    company = "$reg_company"
+    title = "$reg_title"
+    department = "$reg_department"
+    industry = "$reg_industry"
+    phone = "$reg_phone"
+    city = "$reg_city"
+    state = "$reg_state"
+    zip = "$reg_zip"
+    country = "$reg_country"
 }
 
 $registration | ConvertTo-Json -depth 10 | Out-File "C:/tabsetup/registration.json" -Encoding utf8
