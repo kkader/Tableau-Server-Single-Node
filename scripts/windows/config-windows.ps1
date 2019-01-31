@@ -3,8 +3,8 @@ Param(
 )
 
 # base64 decode and convert json string to obj of params
-$paramJson = [System.Text.Encoding]::UTF8.GetString([System.Convert]::FromBase64String($config))
-$param = ConvertFrom-Json $paramJson
+$pJson = [System.Text.Encoding]::UTF8.GetString([System.Convert]::FromBase64String($config))
+$p = ConvertFrom-Json $pJson
 
 ## FILES
 
@@ -13,29 +13,29 @@ cd C:/
 mkdir tabsetup
 
 $secrets = @{
-    local_admin_user="$($param.local_admin_user)"
-    local_admin_pass="$($param.local_admin_pass)"
-    content_admin_user="$($param.ts_admin_un)"
-    content_admin_pass="$($param.ts_admin_pw)"
-    product_keys=@("$($param.license_key)")
+    local_admin_user="$($p.local_admin_user)"
+    local_admin_pass="$($p.local_admin_pass)"
+    content_admin_user="$($p.ts_admin_un)"
+    content_admin_pass="$($p.ts_admin_pw)"
+    product_keys=@("$($p.license_key)")
 }
 
 $secrets | ConvertTo-Json -depth 10 | Out-File "C:/tabsetup/secrets.json" -Encoding utf8
 
 ## 2. make registration.json
 $registration = @{
-    first_name = "$($param.reg_first_name)"
-    last_name = "$($param.reg_last_name)"
-    email = "$($param.reg_email)"
-    company = "$($param.reg_company)"
-    title = "$($param.reg_title)"
-    department = "$($param.reg_department)"
-    industry = "$($param.reg_industry)"
-    phone = "$($param.reg_phone)"
-    city = "$($param.reg_city)"
-    state = "$($param.reg_state)"
-    zip = "$($param.reg_zip)"
-    country = "$($param.reg_country)"
+    first_name = "$($p.reg_first_name)"
+    last_name = "$($p.reg_last_name)"
+    email = "$($p.reg_email)"
+    company = "$($p.reg_company)"
+    title = "$($p.reg_title)"
+    department = "$($p.reg_department)"
+    industry = "$($p.reg_industry)"
+    phone = "$($p.reg_phone)"
+    city = "$($p.reg_city)"
+    state = "$($p.reg_state)"
+    zip = "$($p.reg_zip)"
+    country = "$($p.reg_country)"
 }
 
 $registration | ConvertTo-Json -depth 10 | Out-File "C:/tabsetup/registration.json" -Encoding utf8
