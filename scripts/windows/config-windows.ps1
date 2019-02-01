@@ -55,7 +55,7 @@ $myconfig = @{
 $myconfig | ConvertTo-Json -depth 20 | Out-File "C:/tabsetup/myconfig.json" -Encoding utf8
 
 ## 4. Download scripted installer .py (refers to Tableau's github page)
-Invoke-WebRequest -Uri $install_script_url -OutFile "C:/tabsetup/ScriptedInstaller.py"
+Invoke-WebRequest -Uri $p.install_script_url -OutFile "C:/tabsetup/ScriptedInstaller.py"
 
 ## 5. Download python .exe
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
