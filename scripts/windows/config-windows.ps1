@@ -20,7 +20,7 @@ $secrets = @{
     product_keys=@("$($p.license_key)")
 }
 
-$secrets | ConvertTo-Json -depth 10 | Out-File "C:/tabsetup/secrets.json" -Encoding utf8
+$secrets | ConvertTo-Json -depth 10 | Out-File "C:/tabsetup/secrets.json" -Encoding ascii
 
 ## 2. make registration.json
 $registration = @{
