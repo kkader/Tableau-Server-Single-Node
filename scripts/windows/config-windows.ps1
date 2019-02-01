@@ -38,7 +38,7 @@ $registration = @{
     country = "$($p.reg_country)"
 }
 
-$registration | ConvertTo-Json -depth 10 | Out-File "C:/tabsetup/registration.json" -Encoding utf8
+$registration | ConvertTo-Json -depth 10 | Out-File "C:/tabsetup/registration.json" -Encoding ascii
 
 ## 3. Create config file
 
@@ -52,7 +52,7 @@ $myconfig = @{
     topologyVersion = @{}
 }
 
-$myconfig | ConvertTo-Json -depth 20 | Out-File "C:/tabsetup/myconfig.json" -Encoding utf8
+$myconfig | ConvertTo-Json -depth 20 | Out-File "C:/tabsetup/myconfig.json" -Encoding ascii
 
 ## 4. Download scripted installer .py (refers to Tableau's github page)
 Invoke-WebRequest -Uri $p.install_script_url -OutFile "C:/tabsetup/ScriptedInstaller.py"
