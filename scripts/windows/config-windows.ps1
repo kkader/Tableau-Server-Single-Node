@@ -76,8 +76,8 @@ Start-Process -FilePath "C:/tabsetup/python-3.7.0.exe" -ArgumentList "/quiet Ins
 cd "C:\Program Files (x86)\Python37-32\"
 
 ## Custom Script Extension is running as SYSTEM... does not have the permission to launch a process as another user
-$securePassword = ConvertTo-SecureString $local_admin_pass -AsPlainText -Force
-$usernameWithDomain = $env:COMPUTERNAME+"\"+$local_admin_user
+$securePassword = ConvertTo-SecureString $p.local_admin_pass -AsPlainText -Force
+$usernameWithDomain = $env:COMPUTERNAME+"\"+$p.local_admin_user
 $credentials = New-Object System.Management.Automation.PSCredential($usernameWithDomain, $securePassword)
 
 Invoke-Command -Credential $credentials -ComputerName $env:COMPUTERNAME -ArgumentList $ErrorLog -ScriptBlock {
