@@ -80,11 +80,16 @@ $securePassword = ConvertTo-SecureString $p.local_admin_pass -AsPlainText -Force
 $usernameWithDomain = $env:COMPUTERNAME+"\"+$p.local_admin_user
 $credentials = New-Object System.Management.Automation.PSCredential($usernameWithDomain, $securePassword)
 
-Invoke-Command -Credential $credentials -ComputerName $env:COMPUTERNAME -ArgumentList $ErrorLog -ScriptBlock {
+Invoke-Command -Credential $credentials -ComputerName $env:COMPUTERNAME -ScriptBlock {
     #################################
     # Elevated custom scripts go here 
     #################################
-    Start-Process -FilePath "python.exe" -ArgumentList "C:/tabsetup/ScriptedInstaller.py install --secretsFile C:/tabsetup/secrets.json --configFile C:/tabsetup/myconfig.json --registrationFile C:/tabsetup/registration.json C:/tabsetup/tableau-server-installer.exe --start yes" -Wait -NoNewWindow
+
+    try {
+        Start-Process -FilePath "python.exe" -ArgumentList "C:/tabsetup/ScriptedInstaller.py install --secretsFile C:/tabsetup/secrets.json --configFile C:/tabsetup/myconfig.json --registrationFile C:/tabsetup/registration.json C:/tabsetup/tableau-server-installer.exe --start yes" -Wait -NoNewWindow -RedirectStandardOutput "C:\tabsetup\stdout.txt" -RedirectStandardError "C:\tabsetup\stderr.txt"
+    } catch {
+        $_ | Out-File "C:\tabsetup\errors.txt" -Append
+    }
 }
 
 ## 4. Open port 8850 for TSM access & 80 for Tableau Server access
@@ -92,4 +97,4 @@ New-NetFirewallRule -DisplayName "TSM Inbound" -Direction Inbound -Action Allow 
 New-NetFirewallRule -DisplayName "Tableau Server Inbound" -Direction Inbound -Action Allow -LocalPort 80 -Protocol TCP
 
 ## 4. Clean up secrets
-del c:/tabsetup/secrets.json
+#del c:/tabsetup/secrets.json
