@@ -3,7 +3,7 @@ Param(
 )
 
 # base64 decode and convert json string to obj of params
-$pJson = [System.Text.Encoding]::UTF8.GetString([System.Convert]::FromBase64String($config))
+$pJson = [System.Text.Encoding]::ASCII.GetString([System.Convert]::FromBase64String($config))
 $p = ConvertFrom-Json $pJson
 
 ## FILES
