@@ -80,7 +80,7 @@ $securePassword = ConvertTo-SecureString $p.local_admin_pass -AsPlainText -Force
 $usernameWithDomain = $env:COMPUTERNAME+"\"+$p.local_admin_user
 $credentials = New-Object System.Management.Automation.PSCredential($usernameWithDomain, $securePassword)
 
-Invoke-Command -Credential $credentials -ComputerName $env:COMPUTERNAME -ScriptBlock {
+#Invoke-Command -Credential $credentials -ComputerName $env:COMPUTERNAME -ScriptBlock {
     #################################
     # Elevated custom scripts go here 
     #################################
@@ -90,7 +90,7 @@ Invoke-Command -Credential $credentials -ComputerName $env:COMPUTERNAME -ScriptB
     } catch {
         $_ | Out-File "C:\tabsetup\errors.txt" -Append
     }
-}
+#}
 
 ## 4. Open port 8850 for TSM access & 80 for Tableau Server access
 New-NetFirewallRule -DisplayName "TSM Inbound" -Direction Inbound -Action Allow -LocalPort 8850 -Protocol TCP
