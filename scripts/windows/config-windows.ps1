@@ -12,9 +12,9 @@ mkdir tabsetup
 
 ## 0. make install file
 $cmd = "try {
-    Start-Process -FilePath \`"python.exe\`" -ArgumentList \`"C:/tabsetup/ScriptedInstaller.py install --secretsFile C:/tabsetup/secrets.json --configFile C:/tabsetup/myconfig.json --registrationFile C:/tabsetup/registration.json C:/tabsetup/tableau-server-installer.exe --start yes\`" -Wait -NoNewWindow -RedirectStandardOutput \`"C:\tabsetup\stdout.txt\`" -RedirectStandardError \`"C:\tabsetup\stderr.txt\`"
+    Start-Process -FilePath `"python.exe`" -ArgumentList `"C:/tabsetup/ScriptedInstaller.py install --secretsFile C:/tabsetup/secrets.json --configFile C:/tabsetup/myconfig.json --registrationFile C:/tabsetup/registration.json C:/tabsetup/tableau-server-installer.exe --start yes`" -Wait -NoNewWindow -RedirectStandardOutput `"C:\tabsetup\stdout.txt`" -RedirectStandardError `"C:\tabsetup\stderr.txt`"
 } catch {
-    $_ | Out-File \`"C:\tabsetup\errors.txt\`" -Append
+    $_ | Out-File `"C:\tabsetup\errors.txt`" -Append
 }"
 
 $cmd | Out-File "C:/tabsetup/installTableau.ps1"
