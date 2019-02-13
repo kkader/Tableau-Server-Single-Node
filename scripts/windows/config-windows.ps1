@@ -109,4 +109,4 @@ New-NetFirewallRule -DisplayName "TSM Inbound" -Direction Inbound -Action Allow 
 New-NetFirewallRule -DisplayName "Tableau Server Inbound" -Direction Inbound -Action Allow -LocalPort 80 -Protocol TCP
 
 ## 4. Clean up secrets
-del c:/tabsetup/secrets.json
+#del c:/tabsetup/secrets.json
