@@ -8,6 +8,17 @@ $p = ConvertFrom-Json $pJson
 
 ## FILES
 
+## 0. make install ps1 file
+$cmd = "
+try {
+    Start-Process -FilePath \`"python.exe\`" -ArgumentList \`"C:/tabsetup/ScriptedInstaller.py install --secretsFile C:/tabsetup/secrets.json --configFile C:/tabsetup/myconfig.json --registrationFile C:/tabsetup/registration.json C:/tabsetup/tableau-server-installer.exe --start yes\`" -Wait -NoNewWindow -RedirectStandardOutput \`"C:\tabsetup\stdout.txt\`" -RedirectStandardError \`"C:\tabsetup\stderr.txt\`"
+} catch {
+    $_ | Out-File \`"C:\tabsetup\errors.txt\`" -Append
+}
+"
+
+$cmd | Out-File "C:/tabsetup/installTableau.ps1"
+
 ## 1. make secrets.json file
 cd C:/
 mkdir tabsetup
@@ -80,17 +91,22 @@ $securePassword = ConvertTo-SecureString $p.local_admin_pass -AsPlainText -Force
 $usernameWithDomain = $env:COMPUTERNAME+"\"+$p.local_admin_user
 $credentials = New-Object System.Management.Automation.PSCredential($usernameWithDomain, $securePassword)
 
-Invoke-Command -Credential $credentials -ComputerName $env:COMPUTERNAME -ScriptBlock {
+$command = $file = "C:/tabsetup/installTableau.ps1"
+Enable-PSRemoting –force
+Invoke-Command -FilePath $command -Credential $credentials -ComputerName $env:COMPUTERNAME
+Disable-PSRemoting -Force
+
+#Invoke-Command -Credential $credentials -ComputerName $env:COMPUTERNAME -ScriptBlock {
     #################################
     # Elevated custom scripts go here 
     #################################
 
-    try {
-        Start-Process -FilePath "python.exe" -ArgumentList "C:/tabsetup/ScriptedInstaller.py install --secretsFile C:/tabsetup/secrets.json --configFile C:/tabsetup/myconfig.json --registrationFile C:/tabsetup/registration.json C:/tabsetup/tableau-server-installer.exe --start yes" -Wait -NoNewWindow -RedirectStandardOutput "C:\tabsetup\stdout.txt" -RedirectStandardError "C:\tabsetup\stderr.txt"
-    } catch {
-        $_ | Out-File "C:\tabsetup\errors.txt" -Append
-    }
-}
+#    try {
+#        Start-Process -FilePath "python.exe" -ArgumentList "C:/tabsetup/ScriptedInstaller.py install --secretsFile C:/tabsetup/secrets.json --configFile C:/tabsetup/myconfig.json --registrationFile C:/tabsetup/registration.json C:/tabsetup/tableau-server-installer.exe --start yes" -Wait -NoNewWindow -RedirectStandardOutput "C:\tabsetup\stdout.txt" -RedirectStandardError "C:\tabsetup\stderr.txt"
+#    } catch {
+#        $_ | Out-File "C:\tabsetup\errors.txt" -Append
+#    }
+#}
 
 ## 4. Open port 8850 for TSM access & 80 for Tableau Server access
 New-NetFirewallRule -DisplayName "TSM Inbound" -Direction Inbound -Action Allow -LocalPort 8850 -Protocol TCP
