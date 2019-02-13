@@ -7,6 +7,8 @@ $pJson = [System.Text.Encoding]::ASCII.GetString([System.Convert]::FromBase64Str
 $p = ConvertFrom-Json $pJson
 
 ## FILES
+cd C:/
+mkdir tabsetup
 
 ## 0. make install ps1 file
 $cmd = "
@@ -20,8 +22,6 @@ try {
 $cmd | Out-File "C:/tabsetup/installTableau.ps1"
 
 ## 1. make secrets.json file
-cd C:/
-mkdir tabsetup
 
 $secrets = @{
     local_admin_user="$($p.local_admin_user)"
