@@ -10,19 +10,16 @@ $p = ConvertFrom-Json $pJson
 cd C:/
 mkdir tabsetup
 
-## 0. make install ps1 file
-$cmd = "
-try {
+## 0. make install file
+$cmd = "try {
     Start-Process -FilePath \`"python.exe\`" -ArgumentList \`"C:/tabsetup/ScriptedInstaller.py install --secretsFile C:/tabsetup/secrets.json --configFile C:/tabsetup/myconfig.json --registrationFile C:/tabsetup/registration.json C:/tabsetup/tableau-server-installer.exe --start yes\`" -Wait -NoNewWindow -RedirectStandardOutput \`"C:\tabsetup\stdout.txt\`" -RedirectStandardError \`"C:\tabsetup\stderr.txt\`"
 } catch {
     $_ | Out-File \`"C:\tabsetup\errors.txt\`" -Append
-}
-"
+}"
 
 $cmd | Out-File "C:/tabsetup/installTableau.ps1"
 
 ## 1. make secrets.json file
-
 $secrets = @{
     local_admin_user="$($p.local_admin_user)"
     local_admin_pass="$($p.local_admin_pass)"
@@ -91,9 +88,8 @@ $securePassword = ConvertTo-SecureString $p.local_admin_pass -AsPlainText -Force
 $usernameWithDomain = $env:COMPUTERNAME+"\"+$p.local_admin_user
 $credentials = New-Object System.Management.Automation.PSCredential($usernameWithDomain, $securePassword)
 
-$command = $file = "C:/tabsetup/installTableau.ps1"
-Enable-PSRemoting –force
-Invoke-Command -FilePath $command -Credential $credentials -ComputerName $env:COMPUTERNAME
+Enable-PSRemoting -Force
+Invoke-Command -FilePath "C:/tabsetup/installTableau.ps1" -Credential $credentials -ComputerName $env:COMPUTERNAME
 Disable-PSRemoting -Force
 
 #Invoke-Command -Credential $credentials -ComputerName $env:COMPUTERNAME -ScriptBlock {
